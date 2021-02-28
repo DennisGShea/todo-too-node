@@ -67,17 +67,10 @@ exports.deleteTask = (req, res) => {
   if (!req.params.userId || !req.params.taskId) {
     res.status(400).send("Invalid request");
   }
-  console.log('Got into deleteTasks')
   dbAuth();
   db.collection("tasks")
     .doc(req.params.taskId)
     .delete()
-    .then(() => {
-      console.log("DELETE Worked ");
-      this.getTasks(req, res);
-    })
-    .catch((err) => {
-      console.log("DELETE FAILED: " + err);
-      res.status(500).send("DELETE FAILED: " + err);
-    });
+    .then(() => this.getTasks(req, res))
+    .catch((err) => res.status(500).send("DELETE FAILED: " + err));
 };
